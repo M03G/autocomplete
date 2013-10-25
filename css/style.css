@@ -1,0 +1,39 @@
+body {
+	background: white;
+	padding: 5px;
+}
+#qcity {
+	display: block;
+	width: 300px;
+	padding: 6px 12px;
+	font-size: 1em;
+	line-height: 1.4;
+	color: #555555;
+	vertical-align: middle;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+}
+#city_result {
+	display: none;
+	float: left;
+	min-width: 320px;
+	padding: 6px 12px;
+	margin: 5px 0 0;
+	font-size: 1em;
+	line-height: 1.4;
+	list-style: none;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+}
+#city_result a {
+	font-size: 1em;
+	color: #555555;
+	text-decoration: none;
+}
+#city_result a:hover {
+	font-size: 1em;
+	color: #000000;
+	text-decoration: none;
+}
