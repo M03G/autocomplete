@@ -4,6 +4,8 @@ mysql_connect("localhost", "root", "") or die(mysql_error());
 mysql_select_db("autocomplete") or die(mysql_error());
 mysql_query("SET NAMES 'utf8'");
 
+$query = mysql_real_escape_string($_GET[ci]);
+
 //поиск и выделение искомой части в найденой строке
 function str_light($search, $str){
 	$posFragment = strpos(mb_strtolower($str, 'UTF-8'), mb_strtolower($search, 'UTF-8'));
@@ -36,7 +38,7 @@ function checkObl($oblast) {
 }
 
 if ($_GET[ci]) {
-	$citys = mysql_query("SELECT * FROM `sity4` WHERE UPPER(`punkt`) LIKE UPPER('$_GET[ci]%') OR UPPER(`punkt`) LIKE UPPER('".textswitch($_GET[ci])."%') ORDER BY `punkt` LIMIT 10");
+	$citys = mysql_query("SELECT * FROM `sity4` WHERE UPPER(`punkt`) LIKE UPPER('$query%') OR UPPER(`punkt`) LIKE UPPER('".textswitch($_GET[ci])."%') ORDER BY `punkt` LIMIT 10");
 	// $users = mysql_query("SELECT * FROM `sity3` WHERE MATCH (town) AGAINST ('$_GET[ci]*' IN BOOLEAN MODE)");		
 	$countRows = mysql_num_rows($citys);
 	while ($city = mysql_fetch_array($citys)) {		
@@ -46,7 +48,7 @@ if ($_GET[ci]) {
 	//если найдено меньше 10 городов, которые начинаются с введённой комбинации, то ищем вторым запросом в середине слова
 	if ($countRows < 10) {
 		$diff = 10 - $countRows;
-		$citys = mysql_query("SELECT * FROM `sity4` WHERE (UPPER(`punkt`) NOT REGEXP UPPER('^".textswitch($_GET[ci])."')) AND (UPPER(`punkt`) LIKE UPPER('%$_GET[ci]%') OR UPPER(`punkt`) LIKE UPPER('%".textswitch($_GET[ci])."%')) ORDER BY `punkt` LIMIT $diff");
+		$citys = mysql_query("SELECT * FROM `sity4` WHERE (UPPER(`punkt`) NOT REGEXP UPPER('^".textswitch($_GET[ci])."')) AND (UPPER(`punkt`) LIKE UPPER('%$query%') OR UPPER(`punkt`) LIKE UPPER('%".textswitch($_GET[ci])."%')) ORDER BY `punkt` LIMIT $diff");
 		while ($city = mysql_fetch_array($citys)) {			
 			echo "<a href='javascript:void(0)' onclick='addTown($city[id])' town='$city[punkt]' id='town_$city[id]'>".str_light(textswitch($_GET[ci]), $city[punkt]).", $city[obl] ".checkObl($city[obl])." ($city[ran] район)</a>";
 			echo "<br>";
